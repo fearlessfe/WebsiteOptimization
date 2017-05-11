@@ -418,52 +418,38 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  // 返回不同的尺寸以将披萨元素由一个尺寸改成另一个尺寸。由changePizzaSlices(size)函数调用
-  // function determineDx (elem, size) {
-  //   var oldWidth = elem.offsetWidth;
-  //   var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-  //   var oldSize = oldWidth / windowWidth;
+   // 返回不同的尺寸以将披萨元素由一个尺寸改成另一个尺寸。由changePizzaSlices(size)函数调用
+  function determineDx (elem, size) {
+    var oldWidth = elem.offsetWidth;
+    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
+    var oldSize = oldWidth / windowWidth;
 
-  //   // 将值转成百分比宽度
-  //   function sizeSwitcher (size) {
-  //     switch(size) {
-  //       case "1":
-  //         return 0.25;
-  //       case "2":
-  //         return 0.3333;
-  //       case "3":
-  //         return 0.5;
-  //       default:
-  //         console.log("bug in sizeSwitcher");
-  //     }
-  //   }
-
-  //   var newSize = sizeSwitcher(size);
-  //   var dx = (newSize - oldSize) * windowWidth;
-
-  //   return dx;
-  // }
-
-  // 遍历披萨的元素并改变它们的宽度
-  function changePizzaSizes(size) {
-    switch(size) {
+    // 将值转成百分比宽度
+    function sizeSwitcher (size) {
+      switch(size) {
         case "1":
-          newWidth=25;
-          break;
+          return 0.25;
         case "2":
-          newWidth=33.3;
-          break;
+          return 0.3333;
         case "3":
-          newWidth=50;
-          break;
+          return 0.5;
         default:
           console.log("bug in sizeSwitcher");
       }
-    var randomPizzas=document.querySelectorAll(".randomPizzaContainer");
-    for (var i = 0; i < randomPizzas.length; i++) {
-      // var dx = determineDx(randomPizzas[i], size);
-      // var newwidth = (randomPizzas[i].offsetWidth + dx) + 'px';
-      randomPizzas[i].style.width = newWidth+"%";
+    }
+
+    var newSize = sizeSwitcher(size);
+    var dx = (newSize - oldSize) * windowWidth;
+
+    return dx;
+  }
+
+  // 遍历披萨的元素并改变它们的宽度
+  function changePizzaSizes(size) {
+    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
   }
 
@@ -508,41 +494,16 @@ function logAverageFrame(times) {   // times参数是updatePositions()由User Ti
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // 基于滚动条位置移动背景中的披萨滑窗
-//将node节点的collection转换为数组，使其可以采用数组的方法。
-function getDomNodeArray(selector) {
-    // get the elements as a DOM collection
-    var elemCollection = document.querySelectorAll(selector);
-
-    // coerce the DOM collection into an array
-    var elemArray = Array.prototype.slice.apply(elemCollection);
-
-    return elemArray;
-  };
-
-var worker=new Worker('js/worker.js');
-
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  //Web Worker 不能接受DOM节点数据，因此只能将DOM节点的属性数据传入worker.js中
-  var scrollTop=document.body.scrollTop/1250;
-  var items = getDomNodeArray('.mover');
-  var basicLefts=[];//存储每个节点的basicLeft属性，用于计算
-  
-  items.forEach(function(elem,index,arr){
-    
-    basicLefts.push(elem.basicLeft);
-    
 
-  })
-  worker.postMessage({"basicLefts":basicLefts,"scrollTop":scrollTop});
-  
-  worker.onmessage=function(e){
-    var lefts=e.data;
-    items.forEach(function(elem,index,arr){
-    elem.style.left=lefts[index];
-  })
+  var items = document.querySelectorAll('.mover');
+  for (var i = 0; i < items.length; i++) {
+    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
+
   // 再次使用User Timing API。这很值得学习
   // 能够很容易地自定义测量维度
   window.performance.mark("mark_end_frame");

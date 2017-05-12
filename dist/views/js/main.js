@@ -403,13 +403,13 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -433,7 +433,7 @@ var resizePizzas = function(size) {
         default:
           console.log("bug in sizeSwitcher");
       }
-    var randomPizzas=document.querySelectorAll(".randomPizzaContainer");
+    var randomPizzas=document.getElementByClassName("randomPizzaContainer");
     for (var i = 0; i < randomPizzas.length; i++) {
      
       randomPizzas[i].style.width = newWidth+"%";
@@ -484,7 +484,7 @@ function logAverageFrame(times) {   // times参数是updatePositions()由User Ti
 //将node节点的collection转换为数组，使其可以采用数组的方法。
 function getDomNodeArray(selector) {
     // get the elements as a DOM collection
-    var elemCollection = document.querySelectorAll(selector);
+    var elemCollection = document.getElementsByClassName(selector);
 
     // coerce the DOM collection into an array
     var elemArray = Array.prototype.slice.apply(elemCollection);
@@ -498,8 +498,8 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   //Web Worker 不能接受DOM节点数据，因此只能将DOM节点的属性数据传入worker.js中
-  var scrollTop=document.body.scrollTop/1250;
-  var items = getDomNodeArray('.mover');
+  var scrollTop=document.body.scrollTop;
+  var items = getDomNodeArray('mover');
   var basicLefts=[];//存储每个节点的basicLeft属性，用于计算
   
   items.forEach(function(elem,index,arr){
@@ -528,13 +528,17 @@ function updatePositions() {
 }
 
 // 在页面滚动时运行updatePositions函数
-window.addEventListener('scroll', updatePositions);
+window.addEventListener('scroll', function(){
+  requestAnimationFrame(updatePositions);
+});
 
 // 当页面加载时生成披萨滑窗
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  var clientHeight=document.body.clientHeight;
+  var pizzaNum =clientHeight/s*cols;
+  for (var i = 0; i < pizzaNum; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -542,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.getElementById("movingPizzas1").appendChild(elem);
   }
   updatePositions();
 });

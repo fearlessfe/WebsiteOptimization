@@ -10,7 +10,7 @@ this.onmessage=function(e){
   //原线程属性的计算和复制都在一个循环里面，造成FLS，因此分为了两步
   //在worker线程中不会出现FLS，只是保持了原来的更改
   for (var i = 0; i < basicLefts.length; i++) {
-    var phase = Math.sin(scrollTop + (i % 5));
+    var phase = Math.sin(scrollTop/1250 + (i % 5));
     phases.push(phase);
     
   }

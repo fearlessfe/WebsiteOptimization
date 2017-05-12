@@ -21,7 +21,7 @@
 四、网络字体优化
    	1. 采用WebFontLoader异步加载网络字体
 
-	经过以上四步的优化，PageSpeed Insights上的得分已经超过90分了。还可以改进的地方是将HTML和CSS中的空格、注释删掉，减小文件体积。上面图片优化都是PageSpeed Insights上压缩的，window上一般都有什么无损压缩图片的软件？js压缩也是PageSpeed Insights提供的。学完gulp打包工具后再进一步进行优化吧。
+    经过以上四步的优化，PageSpeed Insights上的得分已经超过90分了。还可以改进的地方是将HTML和CSS中的空格、注释删掉，减小文件体积。上面图片优化都是PageSpeed Insights上压缩的，window上一般都有什么无损压缩图片的软件？js压缩也是PageSpeed Insights提供的。学完gulp打包工具后再进一步进行优化吧。
 
 
 

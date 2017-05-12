@@ -36,3 +36,18 @@
 
 二、Web Worker
 	1.第二处FLS优化后，由于计算量较大，因此采用Web Worker线程。由于Web Worker不能接受DOM节点作为传入的数据，因此只能将需要参加计算节点属性的值传入进去，再将计算的结果传递出来，然后再将结果赋给节点的属性。
+
+
+
+
+
+第二次提交改动
+
+####Part 1: 优化 index.html 的 PageSpeed Insights 得分
+  1. 将js文件全部js文件移到了body的最底部
+
+
+####Part 2: 优化 pizza.html 的 FPS（每秒帧数）
+  1. 将css选择器改为getElementById和getElementsByClassName
+  2. 用到了requestAnimationFrame函数
+  3. 动态计算披萨的个数。由于要获取浏览器的高度，因此载入是会触发强制布局

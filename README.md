@@ -1,12 +1,12 @@
 # WebsiteOptimization
 
-####Part 1: 优化 index.html 的 PageSpeed Insights 得分
+#### Part 1: 优化 index.html 的 PageSpeed Insights 得分
 
 在线测试地址：https://fearlessfe.github.io/WebsiteOptimization/index.html
 
 其中的src中为未优化文件，dist中为优化后的文件，与打包工具无关
 
-####优化点
+#### 优化点
 
 1. css优化
 
@@ -32,9 +32,9 @@
 
 
 
-####Part 2: 优化 pizza.html 的 FPS（每秒帧数）
+#### Part 2: 优化 pizza.html 的 FPS（每秒帧数）
 
-####优化点
+#### 优化点
 
 1. FLS优化
 
